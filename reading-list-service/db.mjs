@@ -21,7 +21,7 @@ sequelize.authenticate().then(() => {
 });
 
 
-
+export default sequelize;
 
 
 
