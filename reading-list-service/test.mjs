@@ -1,22 +1,18 @@
-// Importing the required modules
 import chai from "chai";
 import chaiHttp from "chai-http";
 import app from "./app.mjs";
-import sequelize from './db.mjs'; // Make sure this path is correctly pointing to your Sequelize connection setup
-import Book from './bookModel.mjs'; // Ensuring the Book model is imported for direct operations
+import sequelize from './db.mjs'; 
+import Book from './bookModel.mjs'; 
 
-// Setting up Chai to use the HTTP plugin
+
 chai.use(chaiHttp);
 const expect = chai.expect;
 
-// Describe block for Reading List API tests
+
 describe("Reading List API", () => {
-  // Before each test, clear the books table to ensure test isolation
   beforeEach(async () => {
     await Book.destroy({ where: {} });
   });
-
-  // After all tests, close the database connection pool
   after(async () => {
     await sequelize.close();
   });
@@ -65,7 +61,6 @@ describe("Reading List API", () => {
   // Test suite for GET /reading-list/books
   describe("GET /reading-list/books", () => {
     it("should return all books", async () => {
-      // Adding a book to ensure there's data to retrieve
       await Book.create({
         title: "Sample Book",
         author: "Sample Author",
@@ -132,7 +127,6 @@ describe("Reading List API", () => {
       const res = await chai.request(app).delete(`/reading-list/books/${book.uuid}`);
       expect(res).to.have.status(200);
 
-      // Confirm deletion
       const confirmRes = await chai.request(app).get(`/reading-list/books/${book.uuid}`);
       expect(confirmRes).to.have.status(404);
     });
